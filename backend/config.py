@@ -13,11 +13,10 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Neon serverless closes idle connections — recycle and pre-ping to handle this
     SQLALCHEMY_ENGINE_OPTIONS = {
-        "pool_pre_ping": True,       # test connection before using it
-        "pool_recycle": 300,         # recycle connections every 5 minutes
+        "pool_pre_ping": True,
+        "pool_recycle": 300,
         "pool_size": 5,
         "max_overflow": 2,
-        "connect_args": {"sslmode": "require"},
     }
 
     CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME", "")
