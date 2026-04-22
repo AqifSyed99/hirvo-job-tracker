@@ -9,6 +9,13 @@ load_dotenv(dotenv_path=Path(__file__).parent / ".env")
 class Config:
     DATABASE_URL = os.environ.get("DATABASE_URL", "")
     JWT_SECRET = os.environ.get("JWT_SECRET", "change-me-in-production")
+
+    if not DATABASE_URL:
+        raise ValueError(
+            "DATABASE_URL environment variable is not set. "
+            "Please add it in Render → Environment settings."
+        )
+
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Neon serverless closes idle connections — recycle and pre-ping to handle this
