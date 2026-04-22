@@ -16,7 +16,13 @@ class Config:
             "Please add it in Render → Environment settings."
         )
 
-    SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    # psycopg2cffi compatibility on Python 3.14+
+    _db_url = DATABASE_URL
+    if _db_url.startswith("postgresql://") or _db_url.startswith("postgres://"):
+        _db_url = _db_url.replace("postgresql://", "postgresql+psycopg2cffi://", 1)
+        _db_url = _db_url.replace("postgres://", "postgresql+psycopg2cffi://", 1)
+
+    SQLALCHEMY_DATABASE_URI = _db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Neon serverless closes idle connections — recycle and pre-ping to handle this
     SQLALCHEMY_ENGINE_OPTIONS = {
